@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Teacher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="dashboard">
+    <div class="background-shape"></div>
+    <div class="background-shape two"></div>
+
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-badge">AI</span>
+        <div>
+          <h1>AI Teacher</h1>
+          <p>Study smarter every day</p>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a data-link="dashboard" href="/index.html">Dashboard</a>
+        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
+        <a data-link="practice" href="/practice.html">Practice</a>
+        <a data-link="progress" href="/progress.html">Progress</a>
+      </nav>
+      <a class="primary-btn button-link" href="/practice.html">Start Session</a>
+    </header>
+
+    <main class="app-layout">
+      <section class="hero-card">
+        <p class="eyebrow">Today</p>
+        <h2>Welcome back, <span data-student-name>Student</span>.</h2>
+        <p>
+          Keep your streak alive by reviewing cards, practicing recall, and
+          checking your progress.
+        </p>
+        <div class="hero-actions">
+          <a class="primary-btn button-link" href="/practice.html"
+            >Continue Practice</a
+          >
+          <a class="ghost-btn button-link" href="/flashcards.html"
+            >Create Flashcards</a
+          >
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <p>Study Streak</p>
+          <h3 id="dashboard-streak">0 days</h3>
+        </article>
+        <article class="stat-card">
+          <p>Total Cards</p>
+          <h3 id="dashboard-cards">0</h3>
+        </article>
+        <article class="stat-card">
+          <p>Quiz Accuracy</p>
+          <h3 id="dashboard-accuracy">0%</h3>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Profile</h2>
+          <form id="profile-form" class="stack-form">
+            <label for="student-name">Student Name</label>
+            <input id="student-name" name="studentName" maxlength="30" />
+            <label for="daily-goal">Daily Goal (minutes)</label>
+            <input
+              id="daily-goal"
+              name="dailyGoalMinutes"
+              type="number"
+              min="5"
+              max="240"
+              step="5"
+            />
+            <button class="primary-btn" type="submit">Save Profile</button>
+          </form>
+          <p id="profile-status" class="status-text"></p>
+        </article>
+
+        <article class="panel-card">
+          <h2>Topic Breakdown</h2>
+          <div id="dashboard-topic-list" class="metric-list"></div>
+        </article>
+      </section>
+
+      <section class="study-panel">
+        <div class="panel-header">
+          <h2>Recent Sessions</h2>
+          <a class="ghost-btn button-link" href="/progress.html">View All</a>
+        </div>
+        <div id="dashboard-session-list" class="metric-list"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

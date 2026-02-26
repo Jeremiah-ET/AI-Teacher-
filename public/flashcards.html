@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Teacher | Flashcards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="flashcards">
+    <div class="background-shape"></div>
+    <div class="background-shape two"></div>
+
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-badge">AI</span>
+        <div>
+          <h1>AI Teacher</h1>
+          <p>Build and review your deck</p>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a data-link="dashboard" href="/index.html">Dashboard</a>
+        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
+        <a data-link="practice" href="/practice.html">Practice</a>
+        <a data-link="progress" href="/progress.html">Progress</a>
+      </nav>
+      <a class="primary-btn button-link" href="/practice.html">Practice Deck</a>
+    </header>
+
+    <main class="app-layout">
+      <section class="hero-card">
+        <p class="eyebrow">Flashcards</p>
+        <h2>
+          <span id="flashcard-count">0</span> cards ready for
+          <span data-student-name>Student</span>
+        </h2>
+        <p>Create cards by topic, then practice active recall on the practice page.</p>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Add Flashcard</h2>
+          <form id="flashcard-form" class="stack-form">
+            <label for="card-topic">Topic</label>
+            <input id="card-topic" name="topic" placeholder="Biology" required />
+            <label for="card-question">Question</label>
+            <textarea
+              id="card-question"
+              name="question"
+              rows="3"
+              placeholder="What is mitosis?"
+              required
+            ></textarea>
+            <label for="card-answer">Answer</label>
+            <textarea
+              id="card-answer"
+              name="answer"
+              rows="3"
+              placeholder="Mitosis is cell division..."
+              required
+            ></textarea>
+            <button class="primary-btn" type="submit">Save Flashcard</button>
+          </form>
+          <p id="flashcard-status" class="status-text"></p>
+        </article>
+
+        <article class="panel-card">
+          <div class="panel-header">
+            <h2>Your Deck</h2>
+            <input
+              id="flashcard-search"
+              class="inline-search"
+              placeholder="Search topic or question"
+            />
+          </div>
+          <div id="flashcard-list" class="flashcard-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

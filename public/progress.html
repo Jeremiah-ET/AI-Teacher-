@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Teacher | Progress</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="progress">
+    <div class="background-shape"></div>
+    <div class="background-shape two"></div>
+
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-badge">AI</span>
+        <div>
+          <h1>AI Teacher</h1>
+          <p>Track your study performance</p>
+        </div>
+      </div>
+      <nav class="main-nav">
+        <a data-link="dashboard" href="/index.html">Dashboard</a>
+        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
+        <a data-link="practice" href="/practice.html">Practice</a>
+        <a data-link="progress" href="/progress.html">Progress</a>
+      </nav>
+      <a class="primary-btn button-link" href="/practice.html">New Session</a>
+    </header>
+
+    <main class="app-layout">
+      <section class="hero-card">
+        <p class="eyebrow">Progress</p>
+        <h2><span data-student-name>Student</span>, here is your learning trend.</h2>
+        <p>All progress on this page is currently stored in browser localStorage.</p>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <p>Total Sessions</p>
+          <h3 id="progress-total-sessions">0</h3>
+        </article>
+        <article class="stat-card">
+          <p>Total Study Minutes</p>
+          <h3 id="progress-total-minutes">0</h3>
+        </article>
+        <article class="stat-card">
+          <p>Best Score</p>
+          <h3 id="progress-best-score">0%</h3>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Topic Coverage</h2>
+          <div id="progress-topic-breakdown" class="topic-breakdown"></div>
+        </article>
+
+        <article class="panel-card">
+          <h2>Session History</h2>
+          <div id="progress-session-list" class="metric-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
