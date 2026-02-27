@@ -1,27 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>header</title>
-    <link rel="stylesheet" href="../../public/styles.css" />
-  </head>
-  <body>
-    <header class="top-bar">
-      <div class="brand">
-        <span class="brand-badge">AI</span>
-        <div>
-          <h1>AI Teacher</h1>
-          <p>Practice active recall</p>
-        </div>
-      </div>
-      <nav class="main-nav">
-        <a data-link="dashboard" href="/views/home.ejs">Dashboard</a>
-        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
-        <a data-link="practice" href="/practice.html">Practice</a>
-        <a data-link="progress" href="/progress.html">Progress</a>
-      </nav>
-      <a class="ghost-btn button-link" href="/flashcards.html">Edit Deck</a>
-    </header>
-  </body>
-</html>
+<header class="top-bar">
+  <div class="brand">
+    <span class="brand-badge">AI</span>
+    <div>
+      <h1>AI Teacher</h1>
+      <p>Study smarter every day</p>
+    </div>
+  </div>
+  <nav class="main-nav">
+    <a
+      data-link="dashboard"
+      href="/"
+      class="<%= currentPage === 'dashboard' ? 'active' : '' %>"
+      >Dashboard</a
+    >
+    <a
+      data-link="flashcards"
+      href="/flashcards"
+      class="<%= currentPage === 'flashcards' ? 'active' : '' %>"
+      >Flashcards</a
+    >
+    <a
+      data-link="practice"
+      href="/practice"
+      class="<%= currentPage === 'practice' ? 'active' : '' %>"
+      >Practice</a
+    >
+    <a
+      data-link="progress"
+      href="/progress"
+      class="<%= currentPage === 'progress' ? 'active' : '' %>"
+      >Progress</a
+    >
+  </nav>
+  <a class="ghost-btn button-link" href="/practice">Start Session</a>
+</header>

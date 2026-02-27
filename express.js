@@ -21,7 +21,40 @@ app.set("views", path.join(__dirname, "views"));
 
 // Routes
 app.get("/", (req, res) => {
-  res.render("home", { name: "Jeremiah" });
+  res.render("home", { currentPage: "dashboard" });
+});
+
+app.get("/home", (req, res) => {
+  res.render("home", { currentPage: "dashboard" });
+});
+
+app.get("/flashcards", (req, res) => {
+  res.render("flashcards", { currentPage: "flashcards" });
+});
+
+app.get("/practice", (req, res) => {
+  res.render("practice", { currentPage: "practice" });
+});
+
+app.get("/progress", (req, res) => {
+  res.render("progress", { currentPage: "progress" });
+});
+
+// Backward compatibility for old links
+app.get("/views/home.ejs", (req, res) => {
+  res.redirect("/");
+});
+
+app.get("/views/flashcards.ejs", (req, res) => {
+  res.redirect("/flashcards");
+});
+
+app.get("/views/practice.ejs", (req, res) => {
+  res.redirect("/practice");
+});
+
+app.get("/views/progress.ejs", (req, res) => {
+  res.redirect("/progress");
 });
 
 // Start server

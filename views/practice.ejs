@@ -10,28 +10,13 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body data-page="practice">
     <div class="background-shape"></div>
     <div class="background-shape two"></div>
 
-    <header class="top-bar">
-      <div class="brand">
-        <span class="brand-badge">AI</span>
-        <div>
-          <h1>AI Teacher</h1>
-          <p>Practice active recall</p>
-        </div>
-      </div>
-      <nav class="main-nav">
-        <a data-link="dashboard" href="/index.html">Dashboard</a>
-        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
-        <a data-link="practice" href="/practice.html">Practice</a>
-        <a data-link="progress" href="/progress.html">Progress</a>
-      </nav>
-      <a class="ghost-btn button-link" href="/flashcards.html">Edit Deck</a>
-    </header>
+    <%- include("partials/header") %>
 
     <main class="app-layout">
       <section class="hero-card">
@@ -45,8 +30,12 @@
 
       <section id="practice-empty" class="study-panel hidden">
         <h2>No cards yet</h2>
-        <p>Add cards on the Flashcards page, then come back to start practice.</p>
-        <a class="primary-btn button-link" href="/flashcards.html">Go to Flashcards</a>
+        <p>
+          Add cards on the Flashcards page, then come back to start practice.
+        </p>
+        <a class="primary-btn button-link" href="/flashcards"
+          >Go to Flashcards</a
+        >
       </section>
 
       <section id="practice-setup" class="study-panel">
@@ -63,7 +52,9 @@
             step="1"
             value="5"
           />
-          <button class="primary-btn" id="practice-start" type="submit">Start Practice</button>
+          <button class="primary-btn" id="practice-start" type="submit">
+            Start Practice
+          </button>
         </form>
       </section>
 
@@ -76,8 +67,12 @@
           <form id="practice-answer-form" class="stack-form">
             <label for="practice-answer">Your answer</label>
             <textarea id="practice-answer" rows="4" required></textarea>
-            <button class="primary-btn" id="practice-submit" type="submit">Check Answer</button>
-            <button class="ghost-btn hidden" id="practice-next" type="button">Next</button>
+            <button class="primary-btn" id="practice-submit" type="submit">
+              Check Answer
+            </button>
+            <button class="ghost-btn hidden" id="practice-next" type="button">
+              Next
+            </button>
           </form>
           <p id="practice-feedback" class="status-text"></p>
         </article>
@@ -86,17 +81,21 @@
       <section id="practice-result" class="study-panel hidden">
         <h2>Session Complete</h2>
         <p>
-          Score: <strong id="practice-result-score">0%</strong> |
-          Correct: <strong id="practice-result-correct">0</strong> /
+          Score: <strong id="practice-result-score">0%</strong> | Correct:
+          <strong id="practice-result-correct">0</strong> /
           <strong id="practice-result-total">0</strong>
         </p>
         <div class="hero-actions">
-          <button class="primary-btn" id="practice-restart" type="button">Practice Again</button>
-          <a class="ghost-btn button-link" href="/progress.html">See Progress</a>
+          <button class="primary-btn" id="practice-restart" type="button">
+            Practice Again
+          </button>
+          <a class="ghost-btn button-link" href="/progress"
+            >See Progress</a
+          >
         </div>
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="/app.js"></script>
   </body>
 </html>

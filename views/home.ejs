@@ -10,21 +10,12 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body data-page="dashboard">
     <%- include("partials/header") %>
     <div class="background-shape"></div>
     <div class="background-shape two"></div>
-
-    <header class="top-bar">
-      <div class="brand">
-        <span class="brand-badge">AI</span>
-        <div>
-          <h1>AI Teacher</h1>
-          <p>Study smarter every day</p>
-        </div>
-      </div>
 
     <main class="app-layout">
       <section class="hero-card">
@@ -35,10 +26,10 @@
           checking your progress.
         </p>
         <div class="hero-actions">
-          <a class="primary-btn button-link" href="/practice.html"
+          <a class="primary-btn button-link" href="/practice"
             >Continue Practice</a
           >
-          <a class="ghost-btn button-link" href="/flashcards.html"
+          <a class="ghost-btn button-link" href="/flashcards"
             >Create Flashcards</a
           >
         </div>
@@ -88,12 +79,12 @@
       <section class="study-panel">
         <div class="panel-header">
           <h2>Recent Sessions</h2>
-          <a class="ghost-btn button-link" href="/progress.html">View All</a>
+          <a class="ghost-btn button-link" href="/progress">View All</a>
         </div>
         <div id="dashboard-session-list" class="metric-list"></div>
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="/app.js"></script>
   </body>
 </html>

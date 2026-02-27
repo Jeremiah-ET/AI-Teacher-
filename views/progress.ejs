@@ -10,34 +10,23 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body data-page="progress">
     <div class="background-shape"></div>
     <div class="background-shape two"></div>
 
-    <header class="top-bar">
-      <div class="brand">
-        <span class="brand-badge">AI</span>
-        <div>
-          <h1>AI Teacher</h1>
-          <p>Track your study performance</p>
-        </div>
-      </div>
-      <nav class="main-nav">
-        <a data-link="dashboard" href="/index.html">Dashboard</a>
-        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
-        <a data-link="practice" href="/practice.html">Practice</a>
-        <a data-link="progress" href="/progress.html">Progress</a>
-      </nav>
-      <a class="primary-btn button-link" href="/practice.html">New Session</a>
-    </header>
+    <%- include("partials/header") %>
 
     <main class="app-layout">
       <section class="hero-card">
         <p class="eyebrow">Progress</p>
-        <h2><span data-student-name>Student</span>, here is your learning trend.</h2>
-        <p>All progress on this page is currently stored in browser localStorage.</p>
+        <h2>
+          <span data-student-name>Student</span>, here is your learning trend.
+        </h2>
+        <p>
+          All progress on this page is currently stored in browser localStorage.
+        </p>
       </section>
 
       <section class="stats-grid">
@@ -68,6 +57,6 @@
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="/app.js"></script>
   </body>
 </html>

@@ -10,28 +10,13 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body data-page="flashcards">
     <div class="background-shape"></div>
     <div class="background-shape two"></div>
 
-    <header class="top-bar">
-      <div class="brand">
-        <span class="brand-badge">AI</span>
-        <div>
-          <h1>AI Teacher</h1>
-          <p>Build and review your deck</p>
-        </div>
-      </div>
-      <nav class="main-nav">
-        <a data-link="dashboard" href="/index.html">Dashboard</a>
-        <a data-link="flashcards" href="/flashcards.html">Flashcards</a>
-        <a data-link="practice" href="/practice.html">Practice</a>
-        <a data-link="progress" href="/progress.html">Progress</a>
-      </nav>
-      <a class="primary-btn button-link" href="/practice.html">Practice Deck</a>
-    </header>
+    <%- include("partials/header") %>
 
     <main class="app-layout">
       <section class="hero-card">
@@ -40,7 +25,10 @@
           <span id="flashcard-count">0</span> cards ready for
           <span data-student-name>Student</span>
         </h2>
-        <p>Create cards by topic, then practice active recall on the practice page.</p>
+        <p>
+          Create cards by topic, then practice active recall on the practice
+          page.
+        </p>
       </section>
 
       <section class="study-panel split-grid">
@@ -48,7 +36,12 @@
           <h2>Add Flashcard</h2>
           <form id="flashcard-form" class="stack-form">
             <label for="card-topic">Topic</label>
-            <input id="card-topic" name="topic" placeholder="Biology" required />
+            <input
+              id="card-topic"
+              name="topic"
+              placeholder="Biology"
+              required
+            />
             <label for="card-question">Question</label>
             <textarea
               id="card-question"
@@ -84,6 +77,6 @@
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="/app.js"></script>
   </body>
 </html>
