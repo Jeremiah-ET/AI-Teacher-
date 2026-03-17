@@ -1,70 +1,132 @@
-const STORAGE_KEY = "aiTeacher.v1";
+// API Base URL
+const API_BASE = window.location.origin;
 
-const defaultCards = [
-  {
-    id: "seed-1",
-    topic: "Biology",
-    question: "What is mitosis?",
-    answer:
-      "Mitosis is cell division that creates two genetically identical daughter cells.",
-    createdAt: new Date().toISOString(),
+// State management
+let appState = {
+  profile: {
+    studentName: "Student",
+    dailyGoalMinutes: 30,
   },
-  {
-    id: "seed-2",
-    topic: "Chemistry",
-    question: "What is an atom?",
-    answer: "An atom is the smallest unit of matter that keeps chemical properties.",
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: "seed-3",
-    topic: "Math",
-    question: "What is the Pythagorean theorem?",
-    answer: "In a right triangle, a squared plus b squared equals c squared.",
-    createdAt: new Date().toISOString(),
-  },
-];
+  flashcards: [],
+  sessions: [],
+};
 
-function createInitialState() {
-  return {
-    profile: {
-      studentName: "Student",
-      dailyGoalMinutes: 30,
+// API helper functions
+async function apiRequest(endpoint, options = {}) {
+  const url = `${API_BASE}${endpoint}`;
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
     },
-    flashcards: defaultCards,
-    sessions: [],
+    ...options,
   };
-}
 
-function loadState() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
-      const initial = createInitialState();
-      saveState(initial);
-      return initial;
+    const response = await fetch(url, config);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-
-    const parsed = JSON.parse(raw);
-    return {
-      profile: {
-        studentName: parsed?.profile?.studentName || "Student",
-        dailyGoalMinutes: Number(parsed?.profile?.dailyGoalMinutes) || 30,
-      },
-      flashcards: Array.isArray(parsed?.flashcards) ? parsed.flashcards : [],
-      sessions: Array.isArray(parsed?.sessions) ? parsed.sessions : [],
-    };
+    return await response.json();
   } catch (error) {
-    const initial = createInitialState();
-    saveState(initial);
-    return initial;
+    console.error(`API request failed: ${endpoint}`, error);
+    throw error;
   }
 }
 
-function saveState(state) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+// Load data from API
+async function loadData() {
+  try {
+    const [profile, flashcards, sessions] = await Promise.all([
+      apiRequest("/api/profile"),
+      apiRequest("/api/flashcards"),
+      apiRequest("/api/sessions"),
+    ]);
+
+    appState.profile = profile;
+    appState.flashcards = flashcards;
+    appState.sessions = sessions;
+
+    return appState;
+  } catch (error) {
+    console.error("Failed to load data:", error);
+    // Fallback to default state if API fails
+    return appState;
+  }
 }
 
+// Save functions
+async function saveFlashcard(flashcardData) {
+  try {
+    const saved = await apiRequest("/api/flashcards", {
+      method: "POST",
+      body: JSON.stringify(flashcardData),
+    });
+    appState.flashcards.unshift(saved);
+    return saved;
+  } catch (error) {
+    console.error("Failed to save flashcard:", error);
+    throw error;
+  }
+}
+
+async function updateFlashcard(id, flashcardData) {
+  try {
+    const updated = await apiRequest(`/api/flashcards/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(flashcardData),
+    });
+    const index = appState.flashcards.findIndex((card) => card.id === id);
+    if (index !== -1) {
+      appState.flashcards[index] = updated;
+    }
+    return updated;
+  } catch (error) {
+    console.error("Failed to update flashcard:", error);
+    throw error;
+  }
+}
+
+async function deleteFlashcard(id) {
+  try {
+    await apiRequest(`/api/flashcards/${id}`, {
+      method: "DELETE",
+    });
+    appState.flashcards = appState.flashcards.filter((card) => card.id !== id);
+  } catch (error) {
+    console.error("Failed to delete flashcard:", error);
+    throw error;
+  }
+}
+
+async function saveSession(sessionData) {
+  try {
+    const saved = await apiRequest("/api/sessions", {
+      method: "POST",
+      body: JSON.stringify(sessionData),
+    });
+    appState.sessions.unshift(saved);
+    return saved;
+  } catch (error) {
+    console.error("Failed to save session:", error);
+    throw error;
+  }
+}
+
+async function updateProfile(profileData) {
+  try {
+    const updated = await apiRequest("/api/profile", {
+      method: "PUT",
+      body: JSON.stringify(profileData),
+    });
+    appState.profile = updated;
+    return updated;
+  } catch (error) {
+    console.error("Failed to update profile:", error);
+    throw error;
+  }
+}
+
+// Utility functions
 function uniqueId(prefix) {
   return `${prefix}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
 }
@@ -103,7 +165,11 @@ function getCurrentStreak(sessions) {
 
   let streak = 0;
   const cursor = new Date();
-  while (daySet.has(`${cursor.getFullYear()}-${cursor.getMonth()}-${cursor.getDate()}`)) {
+  while (
+    daySet.has(
+      `${cursor.getFullYear()}-${cursor.getMonth()}-${cursor.getDate()}`,
+    )
+  ) {
     streak += 1;
     cursor.setDate(cursor.getDate() - 1);
   }
@@ -119,8 +185,10 @@ function getStats(state) {
   const avgScore =
     sessions.length > 0
       ? Math.round(
-          sessions.reduce((sum, session) => sum + (Number(session.score) || 0), 0) /
-            sessions.length,
+          sessions.reduce(
+            (sum, session) => sum + (Number(session.score) || 0),
+            0,
+          ) / sessions.length,
         )
       : 0;
   const bestScore =
@@ -179,18 +247,24 @@ function setupDashboard(state) {
   const topicList = document.getElementById("dashboard-topic-list");
   const sessionList = document.getElementById("dashboard-session-list");
 
-  if (!profileForm || !nameInput || !goalInput || !topicList || !sessionList) return;
+  if (!profileForm || !nameInput || !goalInput || !topicList || !sessionList)
+    return;
 
   nameInput.value = state.profile.studentName;
   goalInput.value = String(state.profile.dailyGoalMinutes);
 
-  profileForm.addEventListener("submit", (event) => {
+  profileForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-    state.profile.studentName = nameInput.value.trim() || "Student";
-    state.profile.dailyGoalMinutes = Number(goalInput.value) || 30;
-    saveState(state);
-    renderSharedData(state, getStats(state));
-    status.textContent = "Profile saved.";
+    const studentName = nameInput.value.trim() || "Student";
+    const dailyGoalMinutes = Number(goalInput.value) || 30;
+
+    try {
+      await updateProfile({ studentName, dailyGoalMinutes });
+      renderSharedData(appState, getStats(appState));
+      status.textContent = "Profile saved.";
+    } catch (error) {
+      status.textContent = "Failed to save profile.";
+    }
   });
 
   const topicCounts = getTopicCounts(state.flashcards).slice(0, 6);
@@ -198,7 +272,10 @@ function setupDashboard(state) {
     renderEmptyMessage(topicList, "No flashcards yet.");
   } else {
     topicList.innerHTML = topicCounts
-      .map((item) => `<div class="metric-row"><span>${item.topic}</span><strong>${item.count}</strong></div>`)
+      .map(
+        (item) =>
+          `<div class="metric-row"><span>${item.topic}</span><strong>${item.count}</strong></div>`,
+      )
       .join("");
   }
 
@@ -213,7 +290,7 @@ function setupDashboard(state) {
       .map(
         (session) => `
           <div class="metric-row">
-            <span>${formatDate(session.createdAt)} - ${session.correct}/${session.total}</span>
+            <span>${formatDate(session.createdAt)} - ${session.correctAnswers}/${session.totalQuestions}</span>
             <strong>${session.score}%</strong>
           </div>
         `,
@@ -235,7 +312,9 @@ function setupFlashcards(state) {
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
       .filter((card) => {
         if (!term) return true;
-        return `${card.topic} ${card.question} ${card.answer}`.toLowerCase().includes(term);
+        return `${card.topic} ${card.question} ${card.answer}`
+          .toLowerCase()
+          .includes(term);
       });
 
     if (cards.length === 0) {
@@ -260,7 +339,7 @@ function setupFlashcards(state) {
       .join("");
   }
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const formData = new FormData(form);
     const topic = String(formData.get("topic") || "").trim();
@@ -269,23 +348,20 @@ function setupFlashcards(state) {
 
     if (!topic || !question || !answer) return;
 
-    state.flashcards.push({
-      id: uniqueId("card"),
-      topic,
-      question,
-      answer,
-      createdAt: new Date().toISOString(),
-    });
-    saveState(state);
-    renderSharedData(state, getStats(state));
-    renderCards();
-    form.reset();
-    status.textContent = "Flashcard added.";
+    try {
+      await saveFlashcard({ topic, question, answer });
+      renderSharedData(appState, getStats(appState));
+      renderCards();
+      form.reset();
+      status.textContent = "Flashcard added.";
+    } catch (error) {
+      status.textContent = "Failed to save flashcard.";
+    }
   });
 
   search.addEventListener("input", renderCards);
 
-  list.addEventListener("click", (event) => {
+  list.addEventListener("click", async (event) => {
     const actionTarget = event.target.closest("button[data-action]");
     if (!actionTarget) return;
     const cardNode = actionTarget.closest("[data-id]");
@@ -293,10 +369,13 @@ function setupFlashcards(state) {
     const cardId = cardNode.dataset.id;
 
     if (actionTarget.dataset.action === "delete") {
-      state.flashcards = state.flashcards.filter((card) => card.id !== cardId);
-      saveState(state);
-      renderSharedData(state, getStats(state));
-      renderCards();
+      try {
+        await deleteFlashcard(cardId);
+        renderSharedData(appState, getStats(appState));
+        renderCards();
+      } catch (error) {
+        console.error("Failed to delete flashcard");
+      }
     }
   });
 
@@ -415,7 +494,7 @@ function setupPractice(state) {
     nextBtn.classList.remove("hidden");
   });
 
-  nextBtn.addEventListener("click", () => {
+  nextBtn.addEventListener("click", async () => {
     runState.currentIndex += 1;
     if (runState.currentIndex < runState.cards.length) {
       renderQuestion();
@@ -424,19 +503,22 @@ function setupPractice(state) {
 
     const total = runState.cards.length;
     const score = Math.round((runState.correct / total) * 100);
-    const durationMinutes = Math.max(1, Math.round((Date.now() - runState.startMs) / 60000));
+    const durationMinutes = Math.max(
+      1,
+      Math.round((Date.now() - runState.startMs) / 60000),
+    );
 
-    state.sessions.push({
-      id: uniqueId("session"),
-      type: "practice",
-      total,
-      correct: runState.correct,
-      score,
-      durationMinutes,
-      createdAt: new Date().toISOString(),
-    });
-    saveState(state);
-    renderSharedData(state, getStats(state));
+    try {
+      await saveSession({
+        score,
+        durationMinutes,
+        totalQuestions: total,
+        correctAnswers: runState.correct,
+      });
+      renderSharedData(appState, getStats(appState));
+    } catch (error) {
+      console.error("Failed to save session");
+    }
 
     runPanel.classList.add("hidden");
     resultPanel.classList.remove("hidden");
@@ -489,7 +571,7 @@ function setupProgress(state) {
         (session) => `
           <div class="metric-row">
             <span>${formatDate(session.createdAt)} - ${session.durationMinutes} min</span>
-            <strong>${session.correct}/${session.total} (${session.score}%)</strong>
+            <strong>${session.correctAnswers}/${session.totalQuestions} (${session.score}%)</strong>
           </div>
         `,
       )
@@ -497,17 +579,22 @@ function setupProgress(state) {
   }
 }
 
-function init() {
-  const state = loadState();
-  const stats = getStats(state);
+async function init() {
+  try {
+    await loadData();
+  } catch (error) {
+    console.error("Failed to load data, using defaults");
+  }
+
+  const stats = getStats(appState);
   renderNavActive();
-  renderSharedData(state, stats);
+  renderSharedData(appState, stats);
 
   const page = document.body.dataset.page;
-  if (page === "dashboard") setupDashboard(state);
-  if (page === "flashcards") setupFlashcards(state);
-  if (page === "practice") setupPractice(state);
-  if (page === "progress") setupProgress(state);
+  if (page === "dashboard") setupDashboard(appState);
+  if (page === "flashcards") setupFlashcards(appState);
+  if (page === "practice") setupPractice(appState);
+  if (page === "progress") setupProgress(appState);
 }
 
 window.addEventListener("DOMContentLoaded", init);

@@ -3,6 +3,10 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import cors from "cors";
+import connectDB from "./config/db.js";
+import flashcardRoutes from "./routes/flashcards.js";
+import sessionRoutes from "./routes/sessions.js";
+import profileRoutes from "./routes/profile.js";
 
 dotenv.config();
 
@@ -12,12 +16,20 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 8000;
 
+// Connect to database
+connectDB();
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// API Routes
+app.use("/api/flashcards", flashcardRoutes);
+app.use("/api/sessions", sessionRoutes);
+app.use("/api/profile", profileRoutes);
 
 // Routes
 app.get("/", (req, res) => {
