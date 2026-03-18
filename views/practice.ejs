@@ -21,10 +21,11 @@
     <main class="app-layout">
       <section class="hero-card">
         <p class="eyebrow">Practice Session</p>
-        <h2>Train recall with your own flashcards.</h2>
+        <h2>Train recall with smarter review modes.</h2>
         <p>
           Current deck size: <strong id="practice-total-cards">0</strong> cards.
-          Sessions are saved automatically to browser storage.
+          Due cards, hard-card drills, multiple choice, and typed recall are
+          all supported.
         </p>
       </section>
 
@@ -42,16 +43,42 @@
         <div class="panel-header">
           <h2>Session Setup</h2>
         </div>
-        <form id="practice-setup-form" class="stack-form inline-form">
-          <label for="practice-question-count">Questions this round</label>
+        <form id="practice-setup-form" class="stack-form practice-setup-grid">
+          <p class="form-section-title">Question Count</p>
           <input
             id="practice-question-count"
+            aria-label="Questions this round"
             type="number"
             min="1"
             max="25"
             step="1"
             value="5"
           />
+          <p class="form-section-title">Mode</p>
+          <select id="practice-mode" aria-label="Practice mode">
+            <option value="flashcard">Flip Flashcards</option>
+            <option value="written">Written Recall</option>
+            <option value="multiple-choice">Multiple Choice</option>
+            <option value="true-false">True / False</option>
+            <option value="boss-battle">Boss Battle</option>
+          </select>
+          <p class="form-section-title">Topic</p>
+          <select id="practice-topic-filter" aria-label="Topic focus">
+            <option value="all">All topics</option>
+          </select>
+          <p class="form-section-title">Filters</p>
+          <label class="toggle-row compact-toggle" for="practice-due-only">
+            <span>Use due cards first</span>
+            <input id="practice-due-only" type="checkbox" />
+          </label>
+          <label class="toggle-row compact-toggle" for="practice-hard-only">
+            <span>Hard cards only</span>
+            <input id="practice-hard-only" type="checkbox" />
+          </label>
+          <label class="toggle-row compact-toggle" for="practice-random-order">
+            <span>Shuffle card order</span>
+            <input id="practice-random-order" type="checkbox" checked />
+          </label>
           <button class="primary-btn" id="practice-start" type="submit">
             Start Practice
           </button>
@@ -63,12 +90,58 @@
           <h2 id="practice-progress">Question 1 of 5</h2>
         </div>
         <article class="panel-card">
+          <div class="practice-card-meta">
+            <span id="practice-topic-pill" class="pill">General</span>
+            <span id="practice-mode-pill" class="pill subtle">Written Recall</span>
+          </div>
+          <p class="form-section-title">Question Prompt</p>
           <h3 id="practice-question"></h3>
+          <p id="practice-prompt" class="muted"></p>
+          <section id="practice-flashcard-mode" class="hidden">
+            <div id="practice-flashcard" class="study-flip-card" aria-live="polite">
+              <div class="study-flip-card-inner">
+                <div class="study-flip-face study-flip-front">
+                  <p class="eyebrow">Front</p>
+                  <h3 id="practice-flashcard-front"></h3>
+                  <p id="practice-flashcard-hint" class="muted"></p>
+                </div>
+                <div class="study-flip-face study-flip-back">
+                  <p class="eyebrow">Back</p>
+                  <h3 id="practice-flashcard-back"></h3>
+                  <p id="practice-flashcard-topic" class="muted"></p>
+                </div>
+              </div>
+            </div>
+            <div class="hero-actions practice-flashcard-actions">
+              <button class="ghost-btn" id="practice-flip" type="button">
+                Flip Card
+              </button>
+              <button class="danger-btn hidden" id="practice-mark-wrong" type="button">
+                I Missed It
+              </button>
+              <button class="primary-btn hidden" id="practice-mark-right" type="button">
+                I Got It
+              </button>
+              <button class="ghost-btn hidden" id="practice-flashcard-next" type="button">
+                Next Card
+              </button>
+            </div>
+          </section>
           <form id="practice-answer-form" class="stack-form">
-            <label for="practice-answer">Your answer</label>
-            <textarea id="practice-answer" rows="4" required></textarea>
+            <div id="practice-written-area">
+              <label for="practice-answer">Your answer</label>
+              <textarea id="practice-answer" rows="4"></textarea>
+            </div>
+            <div id="practice-options" class="options-grid hidden"></div>
             <button class="primary-btn" id="practice-submit" type="submit">
               Check Answer
+            </button>
+            <button
+              class="ghost-btn hidden"
+              id="practice-override-correct"
+              type="button"
+            >
+              Override: I Was Right
             </button>
             <button class="ghost-btn hidden" id="practice-next" type="button">
               Next
@@ -85,6 +158,15 @@
           <strong id="practice-result-correct">0</strong> /
           <strong id="practice-result-total">0</strong>
         </p>
+        <p>
+          XP earned: <strong id="practice-result-xp">0</strong> | Mode:
+          <strong id="practice-result-mode">Written Recall</strong>
+        </p>
+        <p>
+          Confidence: <strong id="practice-result-confidence">0%</strong> |
+          Reviewed: <strong id="practice-result-reviewed">0</strong>
+        </p>
+        <div id="practice-result-missed" class="metric-list"></div>
         <div class="hero-actions">
           <button class="primary-btn" id="practice-restart" type="button">
             Practice Again

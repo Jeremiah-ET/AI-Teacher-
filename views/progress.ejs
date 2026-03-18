@@ -25,7 +25,8 @@
           <span data-student-name>Student</span>, here is your learning trend.
         </h2>
         <p>
-          All progress on this page is currently stored in browser localStorage.
+          Your progress is pulled from saved sessions and flashcards in the app
+          database.
         </p>
       </section>
 
@@ -42,6 +43,10 @@
           <p>Best Score</p>
           <h3 id="progress-best-score">0%</h3>
         </article>
+        <article class="stat-card">
+          <p>Average Score</p>
+          <h3 id="progress-average-score">0%</h3>
+        </article>
       </section>
 
       <section class="study-panel split-grid">
@@ -53,6 +58,30 @@
         <article class="panel-card">
           <h2>Session History</h2>
           <div id="progress-session-list" class="metric-list"></div>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Weak Spots</h2>
+          <div id="progress-weak-spots" class="metric-list"></div>
+        </article>
+
+        <article class="panel-card">
+          <h2>Achievements</h2>
+          <div id="progress-achievements" class="badge-list"></div>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Weekly Activity</h2>
+          <div id="progress-weekly-activity" class="metric-list"></div>
+        </article>
+
+        <article class="panel-card">
+          <h2>Recent Misses</h2>
+          <div id="progress-recent-misses" class="metric-list"></div>
         </article>
       </section>
     </main>

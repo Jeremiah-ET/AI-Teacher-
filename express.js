@@ -52,6 +52,10 @@ app.get("/progress", (req, res) => {
   res.render("progress", { currentPage: "progress" });
 });
 
+app.get("/profile", (req, res) => {
+  res.render("profile", { currentPage: "profile" });
+});
+
 // Backward compatibility for old links
 app.get("/views/home.ejs", (req, res) => {
   res.redirect("/");
@@ -67,6 +71,10 @@ app.get("/views/practice.ejs", (req, res) => {
 
 app.get("/views/progress.ejs", (req, res) => {
   res.redirect("/progress");
+});
+
+app.get("/views/profile.ejs", (req, res) => {
+  res.redirect("/profile");
 });
 
 // Start server

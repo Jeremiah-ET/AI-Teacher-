@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Teacher | Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="profile">
+    <div class="background-shape"></div>
+    <div class="background-shape two"></div>
+
+    <%- include("partials/header") %>
+
+    <main class="app-layout">
+      <section class="hero-card profile-hero">
+        <div>
+          <p class="eyebrow">Profile Hub</p>
+          <h2>Build your study setup and track everything in one place.</h2>
+          <p>
+            Update your learner profile, tune your study settings, and review
+            your current progress snapshot.
+          </p>
+        </div>
+        <div class="profile-badge-card">
+          <p class="profile-badge-label">Active learner</p>
+          <h3 data-student-name>Student</h3>
+          <p id="profile-completion-text">Profile setup 0% complete</p>
+        </div>
+      </section>
+
+      <section class="stats-grid profile-stats-grid">
+        <article class="stat-card">
+          <p>Total Sessions</p>
+          <h3 id="profile-total-sessions">0</h3>
+        </article>
+        <article class="stat-card">
+          <p>Total Study Minutes</p>
+          <h3 id="profile-total-minutes">0</h3>
+        </article>
+        <article class="stat-card">
+          <p>Best Score</p>
+          <h3 id="profile-best-score">0%</h3>
+        </article>
+        <article class="stat-card">
+          <p>Goal Progress</p>
+          <h3 id="profile-goal-progress">0%</h3>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid profile-main-grid">
+        <article class="panel-card">
+          <h2>Profile Details</h2>
+          <form id="profile-form" class="stack-form">
+            <label for="student-name">Student Name</label>
+            <input id="student-name" name="studentName" maxlength="30" required />
+
+            <label for="grade-level">Grade Level</label>
+            <input id="grade-level" name="gradeLevel" maxlength="40" required />
+
+            <label for="favorite-subject">Favorite Subject</label>
+            <input
+              id="favorite-subject"
+              name="favoriteSubject"
+              maxlength="40"
+              required
+            />
+
+            <label for="profile-bio">Bio</label>
+            <textarea
+              id="profile-bio"
+              name="bio"
+              rows="4"
+              maxlength="240"
+              placeholder="What are you focusing on right now?"
+            ></textarea>
+
+            <button class="primary-btn" type="submit">Save Profile</button>
+          </form>
+          <p id="profile-status" class="status-text"></p>
+        </article>
+
+        <article class="panel-card">
+          <h2>Study Settings</h2>
+          <form id="profile-settings-form" class="stack-form">
+            <label for="daily-goal">Daily Goal (minutes)</label>
+            <input
+              id="daily-goal"
+              name="dailyGoalMinutes"
+              type="number"
+              min="5"
+              max="240"
+              step="5"
+              required
+            />
+
+            <label for="study-days">Study Days Per Week</label>
+            <input
+              id="study-days"
+              name="studyDaysPerWeek"
+              type="number"
+              min="1"
+              max="7"
+              step="1"
+              required
+            />
+
+            <label for="learning-style">Learning Style</label>
+            <select id="learning-style" name="learningStyle">
+              <option value="Visual">Visual</option>
+              <option value="Auditory">Auditory</option>
+              <option value="Reading/Writing">Reading/Writing</option>
+              <option value="Kinesthetic">Kinesthetic</option>
+            </select>
+
+            <label for="theme-preference">Theme Preference</label>
+            <select id="theme-preference" name="themePreference">
+              <option value="Ocean">Ocean</option>
+              <option value="Sunrise">Sunrise</option>
+              <option value="Forest">Forest</option>
+            </select>
+
+            <label class="toggle-row" for="focus-mode">
+              <span>Focus Mode</span>
+              <input id="focus-mode" name="focusMode" type="checkbox" />
+            </label>
+
+            <button class="ghost-btn" type="submit">Save Settings</button>
+          </form>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Saved Settings</h2>
+          <div id="profile-settings-summary" class="metric-list"></div>
+        </article>
+
+        <article class="panel-card">
+          <h2>Performance Snapshot</h2>
+          <div id="profile-stats-summary" class="metric-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

@@ -26,14 +26,23 @@
           <span data-student-name>Student</span>
         </h2>
         <p>
-          Create cards by topic, then practice active recall on the practice
-          page.
+          Build a stronger deck with tags, difficulty levels, spaced review,
+          and quick editing.
         </p>
       </section>
 
       <section class="study-panel split-grid">
         <article class="panel-card">
-          <h2>Add Flashcard</h2>
+          <div class="panel-header">
+            <h2 id="flashcard-form-title">Add Flashcard</h2>
+            <button
+              class="ghost-btn hidden"
+              id="flashcard-cancel-edit"
+              type="button"
+            >
+              Cancel Edit
+            </button>
+          </div>
           <form id="flashcard-form" class="stack-form">
             <label for="card-topic">Topic</label>
             <input
@@ -58,6 +67,18 @@
               placeholder="Mitosis is cell division..."
               required
             ></textarea>
+            <label for="card-difficulty">Difficulty</label>
+            <select id="card-difficulty" name="difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <label for="card-tags">Tags</label>
+            <input
+              id="card-tags"
+              name="tags"
+              placeholder="exam, chapter 3, review"
+            />
             <button class="primary-btn" type="submit">Save Flashcard</button>
           </form>
           <p id="flashcard-status" class="status-text"></p>
@@ -66,12 +87,31 @@
         <article class="panel-card">
           <div class="panel-header">
             <h2>Your Deck</h2>
+          </div>
+          <div class="control-row">
             <input
               id="flashcard-search"
               class="inline-search"
-              placeholder="Search topic or question"
+              placeholder="Search topic, question, answer, or tag"
             />
+            <select id="flashcard-filter-difficulty">
+              <option value="all">All difficulties</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <select id="flashcard-sort">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="due">Due first</option>
+              <option value="mastery-low">Lowest mastery</option>
+              <option value="mastery-high">Highest mastery</option>
+            </select>
           </div>
+          <label class="toggle-row compact-toggle" for="flashcard-due-only">
+            <span>Show due cards only</span>
+            <input id="flashcard-due-only" type="checkbox" />
+          </label>
           <div id="flashcard-list" class="flashcard-list"></div>
         </article>
       </section>

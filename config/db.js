@@ -43,7 +43,7 @@ async function connectDB() {
     console.log("MySQL database connected.");
 
     // Sync all models
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log("Database synchronized.");
   } catch (error) {
     console.error("Database connection error:", error);

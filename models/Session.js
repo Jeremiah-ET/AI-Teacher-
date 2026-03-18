@@ -38,6 +38,34 @@ const Session = sequelize.define(
         min: 0,
       },
     },
+    mode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "written",
+    },
+    topic: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "Mixed",
+    },
+    xpEarned: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+      validate: {
+        min: 0,
+      },
+    },
+    missedCardIds: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: [],
+    },
+    missedTopics: {
+      type: DataTypes.JSON,
+      allowNull: false,
+      defaultValue: [],
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

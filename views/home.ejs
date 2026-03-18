@@ -48,31 +48,36 @@
           <p>Quiz Accuracy</p>
           <h3 id="dashboard-accuracy">0%</h3>
         </article>
+        <article class="stat-card">
+          <p>Level</p>
+          <h3 id="dashboard-level">Lv. 1</h3>
+        </article>
       </section>
 
       <section class="study-panel split-grid">
         <article class="panel-card">
-          <h2>Profile</h2>
-          <form id="profile-form" class="stack-form">
-            <label for="student-name">Student Name</label>
-            <input id="student-name" name="studentName" maxlength="30" />
-            <label for="daily-goal">Daily Goal (minutes)</label>
-            <input
-              id="daily-goal"
-              name="dailyGoalMinutes"
-              type="number"
-              min="5"
-              max="240"
-              step="5"
-            />
-            <button class="primary-btn" type="submit">Save Profile</button>
-          </form>
-          <p id="profile-status" class="status-text"></p>
+          <div class="panel-header">
+            <h2>Learning Snapshot</h2>
+            <a class="ghost-btn button-link" href="/profile">Edit Profile</a>
+          </div>
+          <div id="dashboard-profile-summary" class="metric-list"></div>
         </article>
 
         <article class="panel-card">
           <h2>Topic Breakdown</h2>
           <div id="dashboard-topic-list" class="metric-list"></div>
+        </article>
+      </section>
+
+      <section class="study-panel split-grid">
+        <article class="panel-card">
+          <h2>Smart Review</h2>
+          <div id="dashboard-review-summary" class="metric-list"></div>
+        </article>
+
+        <article class="panel-card">
+          <h2>Achievements</h2>
+          <div id="dashboard-achievement-list" class="badge-list"></div>
         </article>
       </section>
 

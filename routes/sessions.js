@@ -17,7 +17,17 @@ router.get("/", async (req, res) => {
 // POST /api/sessions - Create a new session
 router.post("/", async (req, res) => {
   try {
-    const { score, durationMinutes, totalQuestions, correctAnswers } = req.body;
+    const {
+      score,
+      durationMinutes,
+      totalQuestions,
+      correctAnswers,
+      mode,
+      topic,
+      xpEarned,
+      missedCardIds,
+      missedTopics,
+    } = req.body;
 
     if (
       score === undefined ||
@@ -44,6 +54,11 @@ router.post("/", async (req, res) => {
       durationMinutes: Number(durationMinutes),
       totalQuestions: Number(totalQuestions),
       correctAnswers: Number(correctAnswers),
+      mode: String(mode || "written"),
+      topic: String(topic || "Mixed"),
+      xpEarned: Number(xpEarned) || 0,
+      missedCardIds: Array.isArray(missedCardIds) ? missedCardIds : [],
+      missedTopics: Array.isArray(missedTopics) ? missedTopics : [],
     });
 
     res.status(201).json(session);
